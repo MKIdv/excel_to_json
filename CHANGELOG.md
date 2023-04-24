@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
+* add method to return a json Map<String, dynamic>
+
+### [1.0.1+mkidv.1](https://github.com/mkidv/excel_to_json/) (2023-04-24)
+
+
+### Features
+
 * melhorias na tipagem dos valores do excel ([13e7e2e](https://github.com/vitoramaral10/excel_to_json/commit/13e7e2ed07b5c0e98f55115c7795b902555cf88c))
 
 ### [1.0.1](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.0...v1.0.1) (2022-11-02)

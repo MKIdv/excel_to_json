@@ -10,7 +10,7 @@ import 'package:flutter/foundation.dart';
 /// This is the main project class.
 class ExcelToJson {
   /// Use this method to convert the file to a json.
-  Future<String?> convert() async {
+  Future<String?> convertToString() async {
     Excel? excel = await _getFile();
 
     if (excel != null) {
@@ -43,6 +43,44 @@ class ExcelToJson {
       }
 
       return jsonEncode(json);
+    }
+
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> convertToMap() async {
+    Excel? excel = await _getFile();
+
+    if (excel != null) {
+      List<String> tables = _getTables(excel);
+
+      int index = 0;
+      Map<String, dynamic> json = {};
+
+      for (String table in tables) {
+        List<Data?> keys = [];
+        json.addAll({table: []});
+
+        for (List<Data?> row in excel.tables[table]?.rows ?? []) {
+          try {
+            if (index == 0) {
+              keys = row;
+              index++;
+            } else {
+              Map<String, dynamic> temp = _getRows(keys, row);
+
+              json[table].add(temp);
+            }
+          } catch (ex) {
+            log(ex.toString());
+
+            rethrow;
+          }
+        }
+        index = 0;
+      }
+
+      return json;
     }
 
     return null;
