@@ -3,7 +3,7 @@ library excel_to_json;
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:excel_facility/excel_facility.dart';
+import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 
@@ -110,6 +110,8 @@ class ExcelToJson {
           }
         } else if (row[index]?.cellType == CellType.Formula) {
           temp[tk] = row[index]?.value.toString();
+        } else {
+          print(row[index]?.cellType);
         }
 
         index++;
