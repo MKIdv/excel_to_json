@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [1.1.0](https://github.com/vitoramaral10/excel_to_json/compare/v1.0.1...v1.1.0) (2022-11-03)
 
+### Features
+
+* change excel_facility dependency to excel
+
+### [1.0.1+mkidv.1](https://github.com/mkidv/excel_to_json/) (2023-04-24)
 
 ### Features
 
