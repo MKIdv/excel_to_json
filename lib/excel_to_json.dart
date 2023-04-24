@@ -111,7 +111,7 @@ class ExcelToJson {
         } else if (row[index]?.cellType == CellType.Formula) {
           temp[tk] = row[index]?.value.toString();
         } else {
-          print(row[index]?.cellType);
+          temp[tk] = row[index]?.value;
         }
 
         index++;
