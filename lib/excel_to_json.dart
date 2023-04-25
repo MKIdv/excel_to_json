@@ -78,7 +78,11 @@ class ExcelToJson {
           } else if (row[index]?.value == 'false') {
             temp[tk] = false;
           } else {
-            temp[tk] = row[index]?.value;
+            if(row[index]?.value.runtimeType == SharedString) {
+              temp[tk] = row[index]?.value.toString();
+            } else {
+              temp[tk] = row[index]?.value;
+            }
           }
         } else if (row[index]?.cellType == CellType.Formula) {
           temp[tk] = row[index]?.value.toString();
