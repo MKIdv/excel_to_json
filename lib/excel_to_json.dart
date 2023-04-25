@@ -10,80 +10,52 @@ import 'package:flutter/foundation.dart';
 /// This is the main project class.
 class ExcelToJson {
   /// Use this method to convert the file to a json.
+
   Future<String?> convertToString() async {
     Excel? excel = await _getFile();
-
     if (excel != null) {
-      List<String> tables = _getTables(excel);
-
-      int index = 0;
-      Map<String, dynamic> json = {};
-
-      for (String table in tables) {
-        List<Data?> keys = [];
-        json.addAll({table: []});
-
-        for (List<Data?> row in excel.tables[table]?.rows ?? []) {
-          try {
-            if (index == 0) {
-              keys = row;
-              index++;
-            } else {
-              Map<String, dynamic> temp = _getRows(keys, row);
-
-              json[table].add(temp);
-            }
-          } catch (ex) {
-            log(ex.toString());
-
-            rethrow;
-          }
-        }
-        index = 0;
-      }
-
-      return jsonEncode(json);
+      return jsonEncode(_convert(excel));
     }
-
     return null;
   }
 
   Future<Map<String, dynamic>?> convertToMap() async {
     Excel? excel = await _getFile();
-
     if (excel != null) {
-      List<String> tables = _getTables(excel);
-
-      int index = 0;
-      Map<String, dynamic> json = {};
-
-      for (String table in tables) {
-        List<Data?> keys = [];
-        json.addAll({table: []});
-
-        for (List<Data?> row in excel.tables[table]?.rows ?? []) {
-          try {
-            if (index == 0) {
-              keys = row;
-              index++;
-            } else {
-              Map<String, dynamic> temp = _getRows(keys, row);
-
-              json[table].add(temp);
-            }
-          } catch (ex) {
-            log(ex.toString());
-
-            rethrow;
-          }
-        }
-        index = 0;
-      }
-
-      return json;
+      return _convert(excel);
     }
-
     return null;
+  }
+
+  Future<Map<String, dynamic>?> _convert(Excel excel) async {
+    List<String> sheets = _getSheets(excel);
+
+    int index = 0;
+    Map<String, dynamic> json = {};
+
+    for (String sheet in sheets) {
+      List<Data?> keys = [];
+      json.addAll({sheet: []});
+
+      for (List<Data?> row in excel.sheets[sheet]?.rows ?? []) {
+        try {
+          if (index == 0) {
+            keys = row;
+            index++;
+          } else {
+            Map<String, dynamic> temp = _getRows(keys, row);
+
+            json[sheet].add(temp);
+          }
+        } catch (ex) {
+          log(ex.toString());
+
+          rethrow;
+        }
+      }
+      index = 0;
+    }
+    return json;
   }
 
   Map<String, dynamic> _getRows(List<Data?> keys, List<Data?> row) {
@@ -110,24 +82,19 @@ class ExcelToJson {
           }
         } else if (row[index]?.cellType == CellType.Formula) {
           temp[tk] = row[index]?.value.toString();
-        } else {
-          temp[tk] = row[index]?.value;
         }
-
         index++;
       }
     }
-
     return temp;
   }
 
-  List<String> _getTables(Excel excel) {
+  List<String> _getSheets(Excel excel) {
     List<String> keys = [];
 
-    for (String table in excel.tables.keys) {
-      keys.add(table);
+    for (String sheet in excel.sheets.keys) {
+      keys.add(sheet);
     }
-
     return keys;
   }
 
